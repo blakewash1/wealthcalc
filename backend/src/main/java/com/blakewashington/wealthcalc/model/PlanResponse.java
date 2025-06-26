@@ -2,6 +2,7 @@ package com.blakewashington.wealthcalc.model;
 
 import com.google.cloud.firestore.annotation.DocumentId;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +11,14 @@ public class PlanResponse {
     private String id;
     private int currentAge;
     private int retirementAge;
-    private double monthlyContribution;
-    private double interestRate;
+    private BigDecimal monthlyContribution;
+    private BigDecimal interestRate;
     private List<YearlyProjection> projections;
 
     public PlanResponse() {}
 
     public PlanResponse(String id, int currentAge, int retirementAge,
-                        double monthlyContribution, double interestRate,
+                        BigDecimal monthlyContribution, BigDecimal interestRate,
                         List<YearlyProjection> projections) {
         this.id = id;
         this.currentAge = currentAge;
@@ -43,19 +44,19 @@ public class PlanResponse {
         this.projections = projections;
     }
 
-    public double getInterestRate() {
+    public BigDecimal getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(BigDecimal interestRate) {
         this.interestRate = interestRate;
     }
 
-    public double getMonthlyContribution() {
+    public BigDecimal getMonthlyContribution() {
         return monthlyContribution;
     }
 
-    public void setMonthlyContribution(double monthlyContribution) {
+    public void setMonthlyContribution(BigDecimal monthlyContribution) {
         this.monthlyContribution = monthlyContribution;
     }
 

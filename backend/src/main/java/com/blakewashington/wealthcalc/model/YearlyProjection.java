@@ -1,13 +1,15 @@
 package com.blakewashington.wealthcalc.model;
 
+import java.math.BigDecimal;
+
 public class YearlyProjection {
     private int year;
     private int age;
-    private double total;
+    private BigDecimal total;
 
     public YearlyProjection(int year, int age) {}
 
-    public YearlyProjection(int year, int age, double total) {
+    public YearlyProjection(int year, int age, BigDecimal total) {
         this.year = year;
         this.age = age;
         this.total = total;
@@ -21,11 +23,11 @@ public class YearlyProjection {
         this.year = year;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 

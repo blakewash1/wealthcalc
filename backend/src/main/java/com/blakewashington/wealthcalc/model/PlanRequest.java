@@ -1,15 +1,17 @@
 package com.blakewashington.wealthcalc.model;
 
+import java.math.BigDecimal;
+
 public class PlanRequest {
     private int currentAge;
     private int retirementAge;
-    private double monthlyContribution;
-    private double interestRate;
+    private BigDecimal monthlyContribution;
+    private BigDecimal interestRate;
 
     public PlanRequest() {}
 
     public PlanRequest(int currentAge, int retirementAge,
-                       double monthlyContribution, double interestRate) {
+                       BigDecimal monthlyContribution, BigDecimal interestRate) {
         this.currentAge = currentAge;
         this.retirementAge = retirementAge;
         this.monthlyContribution = monthlyContribution;
@@ -24,19 +26,19 @@ public class PlanRequest {
         this.currentAge = currentAge;
     }
 
-    public double getInterestRate() {
+    public BigDecimal getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(BigDecimal interestRate) {
         this.interestRate = interestRate;
     }
 
-    public double getMonthlyContribution() {
+    public BigDecimal getMonthlyContribution() {
         return monthlyContribution;
     }
 
-    public void setMonthlyContribution(double monthlyContribution) {
+    public void setMonthlyContribution(BigDecimal monthlyContribution) {
         this.monthlyContribution = monthlyContribution;
     }
 
