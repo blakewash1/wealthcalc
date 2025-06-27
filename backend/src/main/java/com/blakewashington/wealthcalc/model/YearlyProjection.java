@@ -7,7 +7,7 @@ public class YearlyProjection {
     private int age;
     private BigDecimal total;
 
-    public YearlyProjection(int year, int age) {}
+    public YearlyProjection() {}
 
     public YearlyProjection(int year, int age, BigDecimal total) {
         this.year = year;
