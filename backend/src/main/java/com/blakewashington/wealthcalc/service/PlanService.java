@@ -25,7 +25,7 @@ public class PlanService {
         this.firestore = firestore;
     }
 
-    public PlanResponse createAndStorePlan(PlanRequest planRequest) throws Exception {
+    public PlanResponse calculateAndStorePlan(PlanRequest planRequest) throws Exception {
         PlanResponse planResponse = new PlanResponse();
         List<YearlyProjection> projectionsList = calculateYearlyProjections(planRequest);
 
