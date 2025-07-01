@@ -14,6 +14,7 @@ public class PlanResponse {
     private BigDecimal monthlyContribution;
     private BigDecimal interestRate;
     private BigDecimal startingBalance;
+    private BigDecimal finalBalance;
     private List<YearlyProjection> projections;
 
     public PlanResponse() {}
@@ -83,5 +84,13 @@ public class PlanResponse {
 
     public void setStartingBalance(BigDecimal startingBalance) {
         this.startingBalance = startingBalance;
+    }
+
+    public BigDecimal getFinalBalance() {
+        return finalBalance;
+    }
+
+    public void setFinalBalance(BigDecimal finalBalance) {
+        this.finalBalance = finalBalance;
     }
 }

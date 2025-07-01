@@ -4,6 +4,7 @@ import com.blakewashington.wealthcalc.model.PlanRequest;
 import com.blakewashington.wealthcalc.model.PlanResponse;
 import com.blakewashington.wealthcalc.model.YearlyProjection;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.FirestoreOptions;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +22,11 @@ public class PlanService {
     private static final MathContext ROUND_UP = new MathContext(10, RoundingMode.HALF_UP);
     private static final BigDecimal ONE = BigDecimal.ONE;
 
+    // default constructor for testing purposes only
+    public PlanService() {
+        this.firestore = null;
+    }
+
     public PlanService(Firestore firestore) {
         this.firestore = firestore;
     }
@@ -34,7 +40,17 @@ public class PlanService {
         planResponse.setRetirementAge(planRequest.getRetirementAge());
         planResponse.setMonthlyContribution(planRequest.getMonthlyContribution());
         planResponse.setInterestRate(planRequest.getInterestRate());
+        planResponse.setStartingBalance(planRequest.getStartingBalance());
         planResponse.setProjections(projectionsList);
+
+        if (!projectionsList.isEmpty()) {
+            // get total of final YearlyProjection to get final balance
+            YearlyProjection finalYearlyProjection = projectionsList.getLast();
+            planResponse.setFinalBalance(finalYearlyProjection.getTotal());
+
+        } else {
+            planResponse.setFinalBalance(planResponse.getStartingBalance());
+        }
 
         return planResponse;
     }
