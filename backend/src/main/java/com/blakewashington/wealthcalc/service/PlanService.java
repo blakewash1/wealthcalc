@@ -25,15 +25,15 @@ public class PlanService {
         this.firestore = firestore;
     }
 
-    public PlanResponse calculateAndStorePlan(PlanRequest planRequest) throws Exception {
+    public PlanResponse calculatePlan(PlanRequest planRequest) throws Exception {
         PlanResponse planResponse = new PlanResponse();
         List<YearlyProjection> projectionsList = calculateYearlyProjections(planRequest);
 
         planResponse.setId(UUID.randomUUID().toString());
-        planResponse.setCurrentAge(planResponse.getCurrentAge());
-        planResponse.setRetirementAge(planResponse.getRetirementAge());
-        planResponse.setMonthlyContribution(planResponse.getMonthlyContribution());
-        planResponse.setInterestRate(planResponse.getInterestRate());
+        planResponse.setCurrentAge(planRequest.getCurrentAge());
+        planResponse.setRetirementAge(planRequest.getRetirementAge());
+        planResponse.setMonthlyContribution(planRequest.getMonthlyContribution());
+        planResponse.setInterestRate(planRequest.getInterestRate());
         planResponse.setProjections(projectionsList);
 
         return planResponse;
@@ -43,7 +43,7 @@ public class PlanService {
         List<YearlyProjection> projectionsList = new ArrayList<>();
         int yearsUntilRetirement = planRequest.getRetirementAge() - planRequest.getCurrentAge();
 
-        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal total = planRequest.getStartingBalance();
         BigDecimal monthlyContribution = planRequest.getMonthlyContribution();
         BigDecimal annualRate = planRequest.getInterestRate();
         BigDecimal monthsPerYear = new BigDecimal(NUM_MONTHS);

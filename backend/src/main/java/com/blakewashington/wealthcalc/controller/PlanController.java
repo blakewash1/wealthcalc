@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/planner")
 public class PlanController {
@@ -23,18 +21,13 @@ public class PlanController {
     }
 
     @PostMapping("/calculate")
-    public ResponseEntity<PlanResponse> calculatePlan(@RequestBody PlanRequest planRequest) throws Exception {
+    public ResponseEntity<PlanResponse> calculate(@RequestBody PlanRequest planRequest) throws Exception {
         try {
-            PlanResponse planResponse = planService.calculateAndStorePlan(planRequest);
+            PlanResponse planResponse = planService.calculatePlan(planRequest);
             return new ResponseEntity<>(planResponse, HttpStatus.OK);
 
         } catch (Exception e) {
-            // Log the full stack trace (for server logs)
-            e.printStackTrace();
-
-            // Return the message for debugging
-            String errorMessage = "/calculate failed: " + e.getMessage();
-            return ResponseEntity.status(500).body((PlanResponse) Map.of("error", errorMessage));
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

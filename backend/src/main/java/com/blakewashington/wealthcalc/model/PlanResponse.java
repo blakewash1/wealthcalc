@@ -13,18 +13,19 @@ public class PlanResponse {
     private int retirementAge;
     private BigDecimal monthlyContribution;
     private BigDecimal interestRate;
+    private BigDecimal startingBalance;
     private List<YearlyProjection> projections;
 
     public PlanResponse() {}
 
-    public PlanResponse(String id, int currentAge, int retirementAge,
-                        BigDecimal monthlyContribution, BigDecimal interestRate,
-                        List<YearlyProjection> projections) {
+    public PlanResponse(String id, int currentAge, int retirementAge, BigDecimal monthlyContribution,
+                        BigDecimal interestRate, List<YearlyProjection> projections,  BigDecimal startingBalance) {
         this.id = id;
         this.currentAge = currentAge;
         this.retirementAge = retirementAge;
         this.monthlyContribution = monthlyContribution;
         this.interestRate = interestRate;
+        this.startingBalance = startingBalance;
         this.projections = projections;
     }
 
@@ -74,5 +75,13 @@ public class PlanResponse {
 
     public void setCurrentAge(int currentAge) {
         this.currentAge = currentAge;
+    }
+
+    public BigDecimal getStartingBalance() {
+        return startingBalance;
+    }
+
+    public void setStartingBalance(BigDecimal startingBalance) {
+        this.startingBalance = startingBalance;
     }
 }

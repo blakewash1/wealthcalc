@@ -7,15 +7,17 @@ public class PlanRequest {
     private int retirementAge;
     private BigDecimal monthlyContribution;
     private BigDecimal interestRate;
+    private BigDecimal startingBalance;
 
     public PlanRequest() {}
 
-    public PlanRequest(int currentAge, int retirementAge,
-                       BigDecimal monthlyContribution, BigDecimal interestRate) {
+    public PlanRequest(int currentAge, int retirementAge, BigDecimal monthlyContribution,
+                       BigDecimal interestRate, BigDecimal startingBalance) {
         this.currentAge = currentAge;
         this.retirementAge = retirementAge;
         this.monthlyContribution = monthlyContribution;
         this.interestRate = interestRate;
+        this.startingBalance = startingBalance;
     }
 
     public int getCurrentAge() {
@@ -48,5 +50,13 @@ public class PlanRequest {
 
     public void setRetirementAge(int retirementAge) {
         this.retirementAge = retirementAge;
+    }
+
+    public BigDecimal getStartingBalance() {
+        return startingBalance;
+    }
+
+    public void setStartingBalance(BigDecimal startingBalance) {
+        this.startingBalance = startingBalance;
     }
 }
