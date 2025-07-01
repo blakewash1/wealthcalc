@@ -1,23 +1,8 @@
+// src/components/PlanForm.tsx
+
 import { useState } from 'react';
 import axios from 'axios';
-
-type PlanRequest = {
-    currentAge: number;
-    retirementAge: number;
-    monthlyContribution: number;
-    interestRate: number;
-    startingBalance: number;
-};
-
-type YearlyProjection = {
-    age: number;
-    total: number;
-}
-
-type PlanResponse = {
-    finalBalance: number;
-    projections: YearlyProjection[]
-}
+import { type PlanRequest, type PlanResponse } from '@customTypes/plan';
 
 export default function PlanForm() {
     const [form, setForm] = useState<PlanRequest>({
@@ -77,7 +62,7 @@ export default function PlanForm() {
                     <h3>Projections</h3>
                     <ul>
                         {response.projections.map((p, idx) => (
-                            <li key={idx}>Age {p.age}: ${p.total}</li>
+                            <li key={idx}>Age {p.age}: ${p.total.toFixed(2)}</li>
                         ))}
                     </ul>
                     <p><strong>Final Balance: </strong> ${response.finalBalance.toFixed(2)}</p>
