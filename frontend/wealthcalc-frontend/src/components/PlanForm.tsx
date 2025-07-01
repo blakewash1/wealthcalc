@@ -6,17 +6,29 @@ type PlanRequest = {
     retirementAge: number;
     monthlyContribution: number;
     interestRate: number;
+    startingBalance: number;
 };
+
+type YearlyProjection = {
+    age: number;
+    total: number;
+}
+
+type PlanResponse = {
+    finalBalance: number;
+    projections: YearlyProjection[]
+}
 
 export default function PlanForm() {
     const [form, setForm] = useState<PlanRequest>({
         currentAge: 30,
         retirementAge: 65,
         monthlyContribution: 500,
-        interestRate: 0.06
+        interestRate: 0.0,
+        startingBalance: 5000
     });
 
-    const [response, setResponse] = useState<any>(null);
+    const [response, setResponse] = useState<PlanResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,11 +41,16 @@ export default function PlanForm() {
 
     const handleSubmit = async () => {
         try {
-            const res = await axios.post('/api/planner/calculate', form);
+            const res = await axios.post<PlanResponse>('/api/planner/calculate', form);
             setResponse(res.data);
             setError(null);
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Request failed.');
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message || 'Request failed.');
+            } else {
+                setError("An unknown error occured");
+            }
+            
         }
     };
 
@@ -59,10 +76,11 @@ export default function PlanForm() {
                 <div>
                     <h3>Projections</h3>
                     <ul>
-                        {response.projections.map((p: any, idx: number) => (
+                        {response.projections.map((p, idx) => (
                             <li key={idx}>Age {p.age}: ${p.total}</li>
                         ))}
                     </ul>
+                    <p><strong>Final Balance: </strong> ${response.finalBalance.toFixed(2)}</p>
                 </div>
             )}
         </div>
