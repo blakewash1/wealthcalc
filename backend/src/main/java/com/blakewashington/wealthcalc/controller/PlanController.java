@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/planner")
+@RequestMapping("/api/plan")
 public class PlanController {
 
     private final PlanService planService;

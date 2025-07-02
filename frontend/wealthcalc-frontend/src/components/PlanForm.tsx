@@ -2,9 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import { type PlanRequest, type PlanResponse } from '@customTypes/plan';
-
-const API_URL = process.env.REACT_APP_API_URL;
+import { type PlanRequest, type PlanResponse } from '../types/plan';
 
 export default function PlanForm() {
     const [form, setForm] = useState<PlanRequest>({
@@ -28,7 +26,7 @@ export default function PlanForm() {
 
     const handleSubmit = async () => {
         try {
-            const res = await axios.post<PlanResponse>(`${API_URL}/api/planner/calculate`, form);
+            const res = await axios.post<PlanResponse>('/api/plan/calculate', form);
             setResponse(res.data);
             setError(null);
         } catch (err: unknown) {

@@ -19,8 +19,8 @@ public class SecurityConfig {
     public SecurityFilterChain customSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorizeConfig -> {
-                        authorizeConfig.anyRequest().permitAll();
-                }).cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                        authorizeConfig.anyRequest().permitAll(); // allow all routes for now
+                }).csrf(csrf -> csrf.disable())
                 .build();
     }
 
