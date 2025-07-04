@@ -31,7 +31,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000", // local frontend URL
-                "https://wealthcalc-backend-437418419370.us-central1.run.app")); // temp frontend cloud run URL
+                "https://wealthcalc-frontend-437418419370.us-central1.run.app")); // temp frontend cloud run URL
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
 
