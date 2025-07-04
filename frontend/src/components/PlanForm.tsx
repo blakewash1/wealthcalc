@@ -4,6 +4,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { type PlanRequest, type PlanResponse } from '../types/plan';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function PlanForm() {
     const [form, setForm] = useState<PlanRequest>({
         currentAge: 30,
@@ -26,7 +28,7 @@ export default function PlanForm() {
 
     const handleSubmit = async () => {
         try {
-            const res = await axios.post<PlanResponse>('/api/plan/calculate', form);
+            const res = await axios.post<PlanResponse>(`${API_URL}/api/plan/calculate`, form);
             setResponse(res.data);
             setError(null);
         } catch (err: unknown) {

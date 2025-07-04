@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeConfig -> {
                         authorizeConfig.anyRequest().permitAll(); // allow all routes for now
                 }).csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
 
@@ -28,7 +29,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of(
+                "http://localhost:3000", // local frontend URL
+                "https://wealthcalc-backend-437418419370.us-central1.run.app")); // temp frontend cloud run URL
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
 
