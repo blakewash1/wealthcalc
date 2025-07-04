@@ -14,6 +14,12 @@ public class FirestoreConfig {
 
     @Bean
     public Firestore firestore() throws IOException {
-        return FirestoreOptions.getDefaultInstance().getService();
+        try {
+            return FirestoreOptions.getDefaultInstance().getService();
+
+        } catch (Exception ex) {
+            System.err.println("Error initializing Firestore: " + ex.getMessage());
+            throw new RuntimeException("Failed to initialize Firestore", ex);
+        }
     }
 }
