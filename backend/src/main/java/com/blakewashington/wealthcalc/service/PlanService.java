@@ -1,10 +1,12 @@
 package com.blakewashington.wealthcalc.service;
 
+import com.blakewashington.wealthcalc.exception.PlanCalculationException;
 import com.blakewashington.wealthcalc.model.PlanRequest;
 import com.blakewashington.wealthcalc.model.PlanResponse;
 import com.blakewashington.wealthcalc.model.YearlyProjection;
 import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.FirestoreOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @Service
 public class PlanService {
 
+    Logger logger = LoggerFactory.getLogger(PlanRequest.class);
     private final Firestore firestore;
     private static final int NUM_MONTHS = 12;
     private static final MathContext ROUND_UP = new MathContext(10, RoundingMode.HALF_UP);
@@ -35,21 +38,27 @@ public class PlanService {
         PlanResponse planResponse = new PlanResponse();
         List<YearlyProjection> projectionsList = calculateYearlyProjections(planRequest);
 
-        planResponse.setId(UUID.randomUUID().toString());
-        planResponse.setCurrentAge(planRequest.getCurrentAge());
-        planResponse.setRetirementAge(planRequest.getRetirementAge());
-        planResponse.setMonthlyContribution(planRequest.getMonthlyContribution());
-        planResponse.setInterestRate(planRequest.getInterestRate());
-        planResponse.setStartingBalance(planRequest.getStartingBalance());
-        planResponse.setProjections(projectionsList);
+        try {
+            planResponse.setId(UUID.randomUUID().toString());
+            planResponse.setCurrentAge(planRequest.getCurrentAge());
+            planResponse.setRetirementAge(planRequest.getRetirementAge());
+            planResponse.setMonthlyContribution(planRequest.getMonthlyContribution());
+            planResponse.setInterestRate(planRequest.getInterestRate());
+            planResponse.setStartingBalance(planRequest.getStartingBalance());
+            planResponse.setProjections(projectionsList);
 
-        if (!projectionsList.isEmpty()) {
-            // get total of final YearlyProjection to get final balance
-            YearlyProjection finalYearlyProjection = projectionsList.getLast();
-            planResponse.setFinalBalance(finalYearlyProjection.getTotal());
+            if (!projectionsList.isEmpty()) {
+                // get total of final YearlyProjection to get final balance
+                YearlyProjection finalYearlyProjection = projectionsList.getLast();
+                planResponse.setFinalBalance(finalYearlyProjection.getTotal());
 
-        } else {
-            planResponse.setFinalBalance(planResponse.getStartingBalance());
+            } else {
+                planResponse.setFinalBalance(planResponse.getStartingBalance());
+            }
+
+        } catch (Exception ex) {
+            logger.error("Unexpected error in calculatePlan: {}", ex.getMessage(), ex);
+            throw new PlanCalculationException("An error occurred while calculating the plan.", ex);
         }
 
         return planResponse;
