@@ -6,16 +6,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
+import java.util.Map;
 
-@RequestMapping("/test")
+
 @RestController
 public class TestController {
 
-    @GetMapping("/")
+    @GetMapping("/test")
     public String getCredentialsPath() {
         return "we're in";
     }
 
     @GetMapping("/api/me")
-    public ResponseEntity<?> getUserInfo(OAuth2Authen auth)
+    public ResponseEntity<?> getUserInfo(OAuth2AuthenticationToken auth) {
+        String userId = auth.getPrincipal().getAttribute("sub");
+        String email = auth.getPrincipal().getAttribute("email");
+        String name  = auth.getPrincipal().getAttribute("name");
+
+        return ResponseEntity.ok(Map.of("userId", userId, "email", email));
+    }
 }
