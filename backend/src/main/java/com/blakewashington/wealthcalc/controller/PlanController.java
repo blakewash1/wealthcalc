@@ -1,14 +1,14 @@
 package com.blakewashington.wealthcalc.controller;
 
+import com.blakewashington.wealthcalc.model.PlanDocument;
 import com.blakewashington.wealthcalc.model.PlanRequest;
 import com.blakewashington.wealthcalc.model.PlanResponse;
 import com.blakewashington.wealthcalc.service.PlanService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/plan")
@@ -22,13 +22,13 @@ public class PlanController {
 
     @PostMapping("/calculate")
     public ResponseEntity<PlanResponse> calculate(@RequestBody PlanRequest planRequest) throws Exception {
-        try {
-            PlanResponse planResponse = planService.calculatePlan(planRequest);
-            return new ResponseEntity<>(planResponse, HttpStatus.OK);
+        PlanResponse planResponse = planService.calculatePlan(planRequest);
+        return ResponseEntity.ok(planResponse);
+    }
 
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    @GetMapping("/plans/all")
+    public ResponseEntity<List<PlanDocument>> getAllPlans() {
+        return ResponseEntity.ok(planService.getAllPlans());
     }
 
 

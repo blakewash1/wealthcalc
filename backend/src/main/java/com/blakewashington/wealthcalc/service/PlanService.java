@@ -1,9 +1,11 @@
 package com.blakewashington.wealthcalc.service;
 
 import com.blakewashington.wealthcalc.exception.PlanCalculationException;
+import com.blakewashington.wealthcalc.model.PlanDocument;
 import com.blakewashington.wealthcalc.model.PlanRequest;
 import com.blakewashington.wealthcalc.model.PlanResponse;
 import com.blakewashington.wealthcalc.model.YearlyProjection;
+import com.blakewashington.wealthcalc.repository.PlanRepository;
 import com.google.cloud.firestore.Firestore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,19 +21,21 @@ import java.util.UUID;
 @Service
 public class PlanService {
 
-    Logger logger = LoggerFactory.getLogger(PlanRequest.class);
     private final Firestore firestore;
+    private final PlanRepository planRepository;
+
     private static final int NUM_MONTHS = 12;
     private static final MathContext ROUND_UP = new MathContext(10, RoundingMode.HALF_UP);
     private static final BigDecimal ONE = BigDecimal.ONE;
-
-    // default constructor for testing purposes only
-    public PlanService() {
-        this.firestore = null;
-    }
+    Logger logger = LoggerFactory.getLogger(PlanRequest.class);
 
     public PlanService(Firestore firestore) {
         this.firestore = firestore;
+        this.planRepository = new PlanRepository(firestore);
+    }
+
+    public List<PlanDocument> getAllPlans() {
+        return planRepository.findAll();
     }
 
     public PlanResponse calculatePlan(PlanRequest planRequest) throws Exception {
@@ -55,6 +59,8 @@ public class PlanService {
             } else {
                 planResponse.setFinalBalance(planResponse.getStartingBalance());
             }
+
+            planRepository.save(planRequest, planResponse);
 
         } catch (Exception ex) {
             logger.error("Unexpected error in calculatePlan: {}", ex.getMessage(), ex);

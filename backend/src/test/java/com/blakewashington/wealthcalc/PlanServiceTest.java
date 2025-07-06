@@ -3,6 +3,7 @@ package com.blakewashington.wealthcalc;
 import com.blakewashington.wealthcalc.model.PlanRequest;
 import com.blakewashington.wealthcalc.model.PlanResponse;
 import com.blakewashington.wealthcalc.service.PlanService;
+import com.google.cloud.firestore.Firestore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class PlanServiceTest {
 
     private PlanService planService;
+    private Firestore firestore;
 
     @BeforeEach
     public void setup() {
-        planService = new PlanService();
+        planService = new PlanService(firestore);
     }
 
     //TODO: Test for negative values in all fields
