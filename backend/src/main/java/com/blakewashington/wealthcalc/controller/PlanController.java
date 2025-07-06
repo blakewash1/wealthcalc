@@ -26,7 +26,7 @@ public class PlanController {
         return ResponseEntity.ok(planResponse);
     }
 
-    @GetMapping("/plans/all")
+    @GetMapping("get/all")
     public ResponseEntity<List<PlanDocument>> getAllPlans() {
         return ResponseEntity.ok(planService.getAllPlans());
     }
