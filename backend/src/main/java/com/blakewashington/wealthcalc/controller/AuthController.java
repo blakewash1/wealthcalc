@@ -1,6 +1,8 @@
 package com.blakewashington.wealthcalc.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.blakewashington.wealthcalc.model.User;
+import com.blakewashington.wealthcalc.security.GoogleTokenVerifier;
 import com.blakewashington.wealthcalc.security.JwtService;
 import com.blakewashington.wealthcalc.service.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,13 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtService jwtService;
+    private final GoogleTokenVerifier googleTokenVerifier;
 
-    public AuthController(AuthService authService, JwtService jwtService) {
+    public AuthController(AuthService authService, JwtService jwtService,
+                          GoogleTokenVerifier googleTokenVerifier) {
         this.authService = authService;
         this.jwtService = jwtService;
+        this.googleTokenVerifier = googleTokenVerifier;
     }
 
     @PostMapping("/register")
@@ -37,6 +42,24 @@ public class AuthController {
         String password = requestBody.get("password");
         User user = authService.authenticate(email, password);
 
+        String token = jwtService.generateToken(user.getId(), user.getEmail());
+
+        return ResponseEntity.ok(Map.of(
+                "accessToken", token,
+                "userId", user.getId(),
+                "email", user.getEmail()
+        ));
+    }
+
+    @PostMapping("/google")
+    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> body) {
+        String idToken = body.get("idToken");
+
+        DecodedJWT jwt = googleTokenVerifier.verify(idToken);
+        String email = jwt.getClaim("email").asString();
+        String userId = jwt.getSubject(); // Google's user ID (sub)
+
+        User user = authService.createOrFetchUser(userId, email);
         String token = jwtService.generateToken(user.getId(), user.getEmail());
 
         return ResponseEntity.ok(Map.of(

@@ -47,4 +47,18 @@ public class AuthService {
         userRepository.updateLastLogin(user);
         return user;
     }
+
+    public User createOrFetchUser(String userId, String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            user = new User();
+            user.setId(userId);
+            user.setEmail(email);
+            user.setAuthType("google");
+            user.setCreatedAt(Instant.now());
+            userRepository.save(user);
+        }
+
+        return user;
+    }
 }
