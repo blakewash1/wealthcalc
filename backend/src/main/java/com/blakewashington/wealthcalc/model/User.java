@@ -9,6 +9,7 @@ public class User {
     private String passwordHash; // null if Google
     private String authType; // "local" or "google"
     private Instant createdAt;
+    private Instant lastLogin;
 
     public String getId() {
         return id;
@@ -48,5 +49,13 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public Instant getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Instant lastLogin) {
+        this.lastLogin = lastLogin;
     }
 }

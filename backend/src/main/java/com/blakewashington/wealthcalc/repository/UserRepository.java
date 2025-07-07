@@ -35,4 +35,8 @@ public class UserRepository {
             throw new RuntimeException("Error querying user by email", e);
         }
     }
+
+    public void updateLastLogin(User user) {
+        //TODO: WRITE
+    }
 }

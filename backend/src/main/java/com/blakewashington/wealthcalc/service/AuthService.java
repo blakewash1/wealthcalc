@@ -36,7 +36,7 @@ public class AuthService {
 
     public User authenticate(String email, String rawPassword) {
         User user = userRepository.findByEmail(email);
-        if (user == null || "local".equals(user.getAuthType())) {
+        if (user == null || !"local".equals(user.getAuthType())) {
             throw new RuntimeException("User not found or wrong auth type");
         }
 
@@ -44,6 +44,7 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
+        userRepository.updateLastLogin(user);
         return user;
     }
 }
