@@ -13,11 +13,16 @@ import java.util.Map;
 public class TestController {
 
     @GetMapping("/test")
-    public String getCredentialsPath() {
+    public String getTest() {
         return "we're in";
     }
 
-    @GetMapping("/api/me")
+    @GetMapping("/api/test")
+    public String getAuthenticatedTest() {
+        return "we're so in";
+    }
+
+    @GetMapping("/api/google/me")
     public ResponseEntity<?> getUserInfo(OAuth2AuthenticationToken auth) {
         String userId = auth.getPrincipal().getAttribute("sub");
         String email = auth.getPrincipal().getAttribute("email");

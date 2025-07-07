@@ -1,6 +1,7 @@
 package com.blakewashington.wealthcalc.controller;
 
 import com.blakewashington.wealthcalc.model.User;
+import com.blakewashington.wealthcalc.security.JwtService;
 import com.blakewashington.wealthcalc.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +16,11 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtService jwtService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, JwtService jwtService) {
         this.authService = authService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -34,7 +37,12 @@ public class AuthController {
         String password = requestBody.get("password");
         User user = authService.authenticate(email, password);
 
-        //TODO: generate and return JWT
-        return ResponseEntity.ok(Map.of("userId", user.getId(), "email", user.getEmail()));
+        String token = jwtService.generateToken(user.getId(), user.getEmail());
+
+        return ResponseEntity.ok(Map.of(
+                "accessToken", token,
+                "userId", user.getId(),
+                "email", user.getEmail()
+        ));
     }
 }
