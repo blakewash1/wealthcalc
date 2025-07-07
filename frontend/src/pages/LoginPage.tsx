@@ -1,9 +1,18 @@
+import { useEffect } from "react";
 import { EmailLoginForm } from "../components/EmailLoginForm";
 import { GoogleLoginButton } from "../components/GoogleLoginButton";
 import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const { message } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      navigate("/plan");
+    }
+  }, [navigate]);
 
   return (
     <div className="max-w-md mx-auto mt-10 p-4 shadow rounded bg-white">

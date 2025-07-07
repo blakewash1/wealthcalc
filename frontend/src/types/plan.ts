@@ -10,10 +10,10 @@ export type PlanRequest = {
 
 export type YearlyProjection = {
     age: number;
-    total: number;
+    total: string;
 };
 
 export type PlanResponse = {
-    finalBalance: number;
+    finalBalance: string;
     projections: YearlyProjection[];
 };
