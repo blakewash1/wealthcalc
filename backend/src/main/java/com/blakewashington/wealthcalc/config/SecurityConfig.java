@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .csrf(csrf -> csrf.disable())
+//                .csrf(csrf -> csrf.disable()) // very temporary, WIP
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(Customizer.withDefaults())
